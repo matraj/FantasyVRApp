@@ -37,10 +37,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void test(View v){
         Log.d("Test Tag", "Something clicked");
-        Toast.makeText(getApplicationContext(), "Trying to start up Unity!",
-                Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "Trying to start up Unity!",
+//                Toast.LENGTH_LONG).show();
 //        Intent intent = new Intent(main.this, .class);
 //        startActivity(intent);
+//        finish();
+//        Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.example.FantasyCardboardUnityDemo");
+//        startActivity(LaunchIntent);
+//        try {
+//            wait(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        finish();
     }
 }
