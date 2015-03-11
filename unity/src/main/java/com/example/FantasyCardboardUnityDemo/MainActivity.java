@@ -3,8 +3,10 @@ package com.example.FantasyCardboardUnityDemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.vrtoolkit.cardboard.plugins.unity.UnityCardboardActivity;
+
+import java.io.IOException;
+import java.io.File;
 
 //import java.util.logging.Handler;
 
@@ -23,7 +28,12 @@ import com.google.vrtoolkit.cardboard.plugins.unity.UnityCardboardActivity;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-    private Button startButton;
+    private Button startButton, recordButton;
+    private MediaRecorder myAudioRecorder;
+    private MediaPlayer m;
+    private String outputFile = null;
+    private Boolean isPaused = false;
+
     private  final int delayTime = 10000;
     private Handler myHandler = new Handler();
 
@@ -33,6 +43,19 @@ public class MainActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_main);
         Log.d("Test Tag" ,"Started main activity");
         startButton = (Button)findViewById(R.id.start_Button);
+//        recordButton = (Button)findViewById(R.id.record_Button);
+
+        // Set up recording
+        outputFile = Environment.getExternalStorageDirectory().
+                getAbsolutePath() + "/myrecording.3gp";
+
+        m = new MediaPlayer();
+
+        myAudioRecorder = new MediaRecorder();
+        myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        myAudioRecorder.setOutputFile(outputFile);
     }
 
 //    public void onUserInteraction() {
@@ -42,8 +65,15 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private Runnable closeControls = new Runnable() {
         public void run() {
-            Toast.makeText(getApplicationContext(), "3 secoonds has gone by buddy!",
+            Toast.makeText(getApplicationContext(), "10 secoonds has gone by buddy!",
                     Toast.LENGTH_LONG).show();
+
+            myAudioRecorder.stop();
+            myAudioRecorder.release();
+            myAudioRecorder  = null;
+            Toast.makeText(getApplicationContext(), "Audio recorded successfully",
+                    Toast.LENGTH_LONG).show();
+
             UnityCardboardActivity.getActivity().onBackPressed();
             Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
             MainActivity.this.startActivity(mainIntent);
@@ -60,6 +90,56 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+//    public void record(View v) {
+//        Toast.makeText(getApplicationContext(), "I will record you son!",
+//                Toast.LENGTH_SHORT).show();
+//        recordButton.setEnabled(true);
+//        try {
+//            myAudioRecorder.prepare();
+//            myAudioRecorder.start();
+//        } catch (IllegalStateException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+//    }
+//    public void stop(View view){
+//        myAudioRecorder.stop();
+//        myAudioRecorder.release();
+//        myAudioRecorder  = null;
+////        stop.setEnabled(false);
+////        play.setEnabled(true);
+//        Toast.makeText(getApplicationContext(), "Audio recorded successfully",
+//                Toast.LENGTH_LONG).show();
+//    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
+    public void play(View view) throws IllegalArgumentException,
+            SecurityException, IllegalStateException, IOException{
+        if (!isPaused) {
+            m.setDataSource(outputFile);
+            m.prepare();
+            m.start();
+            Toast.makeText(getApplicationContext(), "Start playing audio", Toast.LENGTH_LONG).show();
+        } else {
+            m.start();
+            Toast.makeText(getApplicationContext(), "Re playing audio", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void pause(View view) {
+        m.pause();
+        isPaused = true;
+    }
+
     public void test(View v){
         Log.d("Test Tag", "Something clicked");
         /*Toast.makeText(getApplicationContext(), "Hopefully starting up Unity!",
@@ -74,6 +154,17 @@ public class MainActivity extends Activity implements OnClickListener {
 //        xyz.start()
 
         myHandler.postDelayed(closeControls, delayTime);
+        try {
+            myAudioRecorder.prepare();
+            myAudioRecorder.start();
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 //        Intent myIntent = new Intent(MainActivity.this, UnityPlayerNativeActivity.class);
         Intent unityIntent = new Intent(MainActivity.this, UnityCardboardActivity.class);
         MainActivity.this.startActivity(unityIntent);
