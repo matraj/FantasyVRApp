@@ -21,7 +21,9 @@ public final class R {
         public static final int mainApp=0x7f060000;
         public static final int pause_Button=0x7f060002;
         public static final int play_Button=0x7f060003;
+        public static final int regcognize_Button=0x7f060004;
         public static final int start_Button=0x7f060001;
+        public static final int stopRecognize_Button=0x7f060005;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

@@ -40,18 +40,27 @@
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/start_Button"
         android:layout_toLeftOf="@+id/start_Button" />
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Recognize my Speech"-->
-        <!--android:id="@+id/regcognize_Button"-->
-        <!--android:onClick="recognize"-->
-        <!--android:clickable="true"-->
-        <!--android:layout_marginBottom="44dp"-->
-        <!--android:layout_above="@+id/start_Button"-->
-        <!--android:layout_centerHorizontal="true" />-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recognize my Speech"
+        android:id="@+id/regcognize_Button"
+        android:onClick="recognize"
+        android:clickable="true"
+        android:layout_above="@+id/start_Button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="68dp" />
 
-
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop my Speech"
+        android:id="@+id/stopRecognize_Button"
+        android:onClick="stopRecognize"
+        android:clickable="true"
+        android:layout_alignTop="@+id/regcognize_Button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
-<!-- From: file:/Users/knowroaming/Documents/Mat%20Dev/Android/FantasyVRApp/FantasyVRApp/unity/src/main/res/layout/activity_main.xml -->
+<!-- From: file:/C:/Users/Mat/Documents/Documents/Matty's%20stuff/Programming/Android/FantasyAndroidApp/unity/src/main/res/layout/activity_main.xml -->
