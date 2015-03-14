@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -44,6 +45,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private MediaPlayer m;
     private String outputFile = null;
     private Boolean isPaused = false;
+    private Uri audioUri = null;
+    private Intent recognizerIntent; //
 //    private Boolean isDonePlaying = true;
 
     private  final int delayTime = 5000;
@@ -92,9 +95,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 //            sr.stopListening();
 
-            myAudioRecorder.stop();
-            myAudioRecorder.release();
-            myAudioRecorder  = null;
+//            myAudioRecorder.stop();
+//            myAudioRecorder.release();
+//            myAudioRecorder  = null;
             Toast.makeText(getApplicationContext(), "Audio recorded successfully",
                     Toast.LENGTH_LONG).show();
 
@@ -151,6 +154,7 @@ public class MainActivity extends Activity implements OnClickListener {
             SecurityException, IllegalStateException, IOException{
         if (!isPaused) {
             m.setDataSource(outputFile);
+//            m.setDataSource(this, audioUri);
             m.prepare();
             m.start();
             Toast.makeText(getApplicationContext(), "Start playing audio", Toast.LENGTH_LONG).show();
@@ -193,15 +197,15 @@ public class MainActivity extends Activity implements OnClickListener {
         myHandler.postDelayed(closeControls, delayTime);
         try {
             speak2();
-            myAudioRecorder.prepare();
-            myAudioRecorder.start();
+//            myAudioRecorder.prepare();
+//            myAudioRecorder.start();
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            e.printStackTrace();}
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 //        Intent myIntent = new Intent(MainActivity.this, UnityPlayerNativeActivity.class);
         Intent unityIntent = new Intent(MainActivity.this, UnityCardboardActivity.class);
@@ -337,12 +341,16 @@ public class MainActivity extends Activity implements OnClickListener {
 //    }
 
     public void speak2() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
+        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 10000);
 
-        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);
-        sr.startListening(intent);
+        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");//
+        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO", true);//
+
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);
+        sr.startListening(recognizerIntent);
         Log.i("111111","11111111");
     }
 
@@ -380,9 +388,12 @@ public class MainActivity extends Activity implements OnClickListener {
             for (int i = 0; i < data.size(); i++)
             {
                 Log.d(TAG, "result " + data.get(i));
+                Toast.makeText(getApplicationContext(), "result " + data.get(i), Toast.LENGTH_LONG).show();
                 str += data.get(i);
             }
-            Toast.makeText(getApplicationContext(), "results: "+String.valueOf(data.size()), Toast.LENGTH_LONG).show();
+
+            audioUri = recognizerIntent.getData();
+            //Toast.makeText(getApplicationContext(), "results: "+String.valueOf(data.size()), Toast.LENGTH_LONG).show();
 //            mText.setText("results: "+String.valueOf(data.size()));
         }
         public void onPartialResults(Bundle partialResults)
