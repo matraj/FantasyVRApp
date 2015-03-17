@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.google.vrtoolkit.cardboard.plugins.unity.UnityCardboardActivity;
@@ -49,8 +50,11 @@ public class MainActivity extends Activity implements OnClickListener {
     private Intent recognizerIntent; //
 //    private Boolean isDonePlaying = true;
 
-    private  final int delayTime = 5000;
+    private int delayTime = 5000;
     private Handler myHandler = new Handler();
+
+    NumberPicker numPicker = null;
+    NumberPicker minuteNumPicker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,14 @@ public class MainActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_main);
         Log.d("Test Tag" ,"Started main activity");
         startButton = (Button)findViewById(R.id.start_Button);
+        numPicker = (NumberPicker)findViewById(R.id.pickNumber);
+        numPicker.setMaxValue(59);
+        numPicker.setMinValue(0);
+//        numPicker.setWrapSelectorWheel(true);
+        minuteNumPicker = (NumberPicker)findViewById(R.id.pickNumberMinute);
+        minuteNumPicker.setMaxValue(59);
+        minuteNumPicker.setMinValue(0);
+//        numPicker.setWrapSelectorWheel(true);
 //        recordButton = (Button)findViewById(R.id.record_Button);
 
         // Set up recording
@@ -186,7 +198,11 @@ public class MainActivity extends Activity implements OnClickListener {
         /*Toast.makeText(getApplicationContext(), "Hopefully starting up Unity!",
                 Toast.LENGTH_SHORT).show();
 */
-        Toast.makeText(getApplicationContext(), "Initializing thread",
+//        minuteNumPicker.getValue()
+        delayTime = minuteNumPicker.getValue()*1000 + numPicker.getValue()*60000;
+        Toast.makeText(getApplicationContext(), "Minutes:" + numPicker.getValue() + " Secodnds: " + minuteNumPicker.getValue(),
+                Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Delay: " + delayTime,
                 Toast.LENGTH_SHORT).show();
 //        new backgroundThread().execute();
 //        Thread xyz = new Thread(new PhotoDecodeRunnable());

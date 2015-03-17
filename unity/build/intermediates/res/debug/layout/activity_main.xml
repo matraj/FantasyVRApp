@@ -62,5 +62,20 @@
         android:layout_alignTop="@+id/regcognize_Button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/pickNumber"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <NumberPicker
+        android:layout_width="80dp"
+        android:layout_height="200dp"
+        android:id="@+id/pickNumberMinute"
+
+        android:layout_toLeftOf="@+id/pause_Button"/>
 </RelativeLayout>
 <!-- From: file:/Users/knowroaming/Documents/Mat%20Dev/Android/FantasyVRApp/FantasyVRApp/unity/src/main/res/layout/activity_main.xml -->
