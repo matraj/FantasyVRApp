@@ -105,18 +105,21 @@ public class MainActivity extends Activity implements OnClickListener {
             Toast.makeText(getApplicationContext(), "10 secoonds has gone by buddy!",
                     Toast.LENGTH_LONG).show();
 
-//            sr.stopListening();
-
-//            myAudioRecorder.stop();
-//            myAudioRecorder.release();
-//            myAudioRecorder  = null;
+            boolean shoudRecord = ((MyApplication) MainActivity.this.getApplication()).getShouldRecord();
+            if (!shoudRecord) {
+                sr.stopListening();
+            } else {
+                myAudioRecorder.stop();
+                myAudioRecorder.release();
+                myAudioRecorder  = null;
+            }
             Toast.makeText(getApplicationContext(), "Audio recorded successfully",
                     Toast.LENGTH_LONG).show();
 
             UnityCardboardActivity.getActivity().onBackPressed();
             Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
             MainActivity.this.startActivity(mainIntent);
-            sr.stopListening();
+//            sr.stopListening();
         }
     };
 
@@ -176,6 +179,11 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    public void segue(View view) {
+        Intent intent = new Intent(MainActivity.this, Settings.class);
+        startActivity(intent);
+    }
+
     public void recognize(View view) {
         Toast.makeText(getApplicationContext(), "Recognizing Voice",
                 Toast.LENGTH_SHORT).show();
@@ -200,8 +208,8 @@ public class MainActivity extends Activity implements OnClickListener {
 */
 //        minuteNumPicker.getValue()
         delayTime = minuteNumPicker.getValue()*1000 + numPicker.getValue()*60000;
-        Toast.makeText(getApplicationContext(), "Minutes:" + numPicker.getValue() + " Secodnds: " + minuteNumPicker.getValue(),
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "Minutes:" + numPicker.getValue() + " Secodnds: " + minuteNumPicker.getValue(),
+//                Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), "Delay: " + delayTime,
                 Toast.LENGTH_SHORT).show();
 //        new backgroundThread().execute();
@@ -211,17 +219,22 @@ public class MainActivity extends Activity implements OnClickListener {
 //        xyz.start()
 
         myHandler.postDelayed(closeControls, delayTime);
-        try {
-            speak2();
-//            myAudioRecorder.prepare();
-//            myAudioRecorder.start();
-        } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();}
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+            boolean shoudRecord = ((MyApplication) this.getApplication()).getShouldRecord();
+
+            if (!shoudRecord) {
+                speak2();
+            } else {
+                try {
+                    myAudioRecorder.prepare();
+                    myAudioRecorder.start();
+//                } catch (IllegalStateException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();}
+                } catch (IOException e) {
+                 // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 //        Intent myIntent = new Intent(MainActivity.this, UnityPlayerNativeActivity.class);
         Intent unityIntent = new Intent(MainActivity.this, UnityCardboardActivity.class);

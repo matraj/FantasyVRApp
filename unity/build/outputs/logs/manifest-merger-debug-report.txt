@@ -57,6 +57,8 @@ ADDED from AndroidManifest.xml:25:3
 		ADDED from AndroidManifest.xml:25:83
 	android:icon
 		ADDED from AndroidManifest.xml:25:16
+	android:name
+		ADDED from AndroidManifest.xml:25:109
 activity#com.example.FantasyCardboardUnityDemo.MainActivity
 ADDED from AndroidManifest.xml:26:7
 	android:screenOrientation
@@ -99,21 +101,29 @@ ADDED from AndroidManifest.xml:41:7
 		ADDED from AndroidManifest.xml:41:18
 	android:value
 		ADDED from AndroidManifest.xml:41:59
+activity#com.example.FantasyCardboardUnityDemo.Settings
+ADDED from AndroidManifest.xml:43:7
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:45:44
+	android:label
+		ADDED from AndroidManifest.xml:45:11
+	android:name
+		ADDED from AndroidManifest.xml:44:11
 uses-feature#android.hardware.touchscreen
-ADDED from AndroidManifest.xml:52:3
+ADDED from AndroidManifest.xml:56:3
 	android:required
-		ADDED from AndroidManifest.xml:52:61
+		ADDED from AndroidManifest.xml:56:61
 	android:name
-		ADDED from AndroidManifest.xml:52:17
+		ADDED from AndroidManifest.xml:56:17
 uses-feature#android.hardware.touchscreen.multitouch
-ADDED from AndroidManifest.xml:53:3
+ADDED from AndroidManifest.xml:57:3
 	android:required
-		ADDED from AndroidManifest.xml:53:72
+		ADDED from AndroidManifest.xml:57:72
 	android:name
-		ADDED from AndroidManifest.xml:53:17
+		ADDED from AndroidManifest.xml:57:17
 uses-feature#android.hardware.touchscreen.multitouch.distinct
-ADDED from AndroidManifest.xml:54:3
+ADDED from AndroidManifest.xml:58:3
 	android:required
-		ADDED from AndroidManifest.xml:54:81
+		ADDED from AndroidManifest.xml:58:81
 	android:name
-		ADDED from AndroidManifest.xml:54:17
+		ADDED from AndroidManifest.xml:58:17

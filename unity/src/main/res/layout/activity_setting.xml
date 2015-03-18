@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record"
+        android:onClick="shouldRecord"
+        android:id="@+id/audioToggle"
+        android:layout_marginBottom="82dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Easy Presentation"
+        android:id="@+id/easy_button"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"
+        android:onClick="easyModeClicked"
+        android:layout_alignLeft="@+id/medium_button"
+        android:layout_alignStart="@+id/medium_button"
+        android:layout_alignRight="@+id/medium_button"
+        android:layout_alignEnd="@+id/medium_button" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medium Presentation"
+        android:id="@+id/medium_button"
+        android:layout_below="@+id/easy_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hard Presentation"
+        android:id="@+id/hard_button"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/medium_button"
+        android:layout_alignEnd="@+id/medium_button"
+        android:layout_alignLeft="@+id/medium_button"
+        android:layout_alignStart="@+id/medium_button" />
+</RelativeLayout>
