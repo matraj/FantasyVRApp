@@ -7,7 +7,7 @@ import android.app.Application;
  */
 public class MyApplication extends Application {
 
-    private boolean shouldRecord;
+    private boolean shouldRecord = false;
 
     public boolean getShouldRecord() {
         return shouldRecord;

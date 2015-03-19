@@ -210,7 +210,7 @@ public class MainActivity extends Activity implements OnClickListener {
         delayTime = minuteNumPicker.getValue()*1000 + numPicker.getValue()*60000;
 //        Toast.makeText(getApplicationContext(), "Minutes:" + numPicker.getValue() + " Secodnds: " + minuteNumPicker.getValue(),
 //                Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), "Delay: " + delayTime,
+        Toast.makeText(getApplicationContext(), "min: " + numPicker.getValue() + " sec: " + minuteNumPicker.getValue() + " delay: " + delayTime,
                 Toast.LENGTH_SHORT).show();
 //        new backgroundThread().execute();
 //        Thread xyz = new Thread(new PhotoDecodeRunnable());
@@ -373,12 +373,16 @@ public class MainActivity extends Activity implements OnClickListener {
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 10000);
 
-        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");//
-        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO", true);//
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, delayTime);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, delayTime);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, delayTime);
 
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);
+
+//        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");//
+//        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO", true);//
+
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,2);
         sr.startListening(recognizerIntent);
         Log.i("111111","11111111");
     }
