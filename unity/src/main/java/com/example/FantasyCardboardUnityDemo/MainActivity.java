@@ -42,6 +42,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private static final String TAG = "MyStt3Activity";
 
     private Button startButton, recordButton;
+    private Button playButton, pauseButton;
+
     private MediaRecorder myAudioRecorder;
     private MediaPlayer m;
     private String outputFile = null;
@@ -53,24 +55,14 @@ public class MainActivity extends Activity implements OnClickListener {
     private int delayTime = 5000;
     private Handler myHandler = new Handler();
 
-    NumberPicker numPicker = null;
-    NumberPicker minuteNumPicker = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("Test Tag" ,"Started main activity");
         startButton = (Button)findViewById(R.id.start_Button);
-        numPicker = (NumberPicker)findViewById(R.id.pickNumber);
-        numPicker.setMaxValue(59);
-        numPicker.setMinValue(0);
-//        numPicker.setWrapSelectorWheel(true);
-        minuteNumPicker = (NumberPicker)findViewById(R.id.pickNumberMinute);
-        minuteNumPicker.setMaxValue(59);
-        minuteNumPicker.setMinValue(0);
-//        numPicker.setWrapSelectorWheel(true);
-//        recordButton = (Button)findViewById(R.id.record_Button);
+        playButton = (Button)findViewById(R.id.play_Button);
+        pauseButton = (Button)findViewById(R.id.pause_Button);
 
         // Set up recording
         outputFile = Environment.getExternalStorageDirectory().
@@ -95,10 +87,12 @@ public class MainActivity extends Activity implements OnClickListener {
         myAudioRecorder.setOutputFile(outputFile);
     }
 
-//    public void onUserInteraction() {
-//        myHandler.removeCallbacks(closeControls);
-//        myHandler.postDelayed(closeControls, delayTime);
-//    }
+    @Override
+    public void onStart() {
+//        playButton.setEnabled(false);
+//        pauseButton.setEnabled(false);
+        super.onStart();
+    }
 
     private Runnable closeControls = new Runnable() {
         public void run() {
@@ -119,7 +113,6 @@ public class MainActivity extends Activity implements OnClickListener {
             UnityCardboardActivity.getActivity().onBackPressed();
             Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
             MainActivity.this.startActivity(mainIntent);
-//            sr.stopListening();
         }
     };
 
@@ -133,40 +126,10 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-//    public void record(View v) {
-//        Toast.makeText(getApplicationContext(), "I will record you son!",
-//                Toast.LENGTH_SHORT).show();
-//        recordButton.setEnabled(true);
-//        try {
-//            myAudioRecorder.prepare();
-//            myAudioRecorder.start();
-//        } catch (IllegalStateException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
-//    }
-//    public void stop(View view){
-//        myAudioRecorder.stop();
-//        myAudioRecorder.release();
-//        myAudioRecorder  = null;
-////        stop.setEnabled(false);
-////        play.setEnabled(true);
-//        Toast.makeText(getApplicationContext(), "Audio recorded successfully",
-//                Toast.LENGTH_LONG).show();
-//    }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
     public void play(View view) throws IllegalArgumentException,
             SecurityException, IllegalStateException, IOException{
+        pauseButton.setEnabled(true);
+        playButton.setEnabled(false);
         if (!isPaused) {
             m.setDataSource(outputFile);
 //            m.setDataSource(this, audioUri);
@@ -184,19 +147,9 @@ public class MainActivity extends Activity implements OnClickListener {
         startActivity(intent);
     }
 
-    public void recognize(View view) {
-        Toast.makeText(getApplicationContext(), "Recognizing Voice",
-                Toast.LENGTH_SHORT).show();
-        speak2();
-    }
-
-    public void stopRecognize(View view) { //stopRecognize
-        Toast.makeText(getApplicationContext(), "Stopping recognizing Voice",
-                Toast.LENGTH_SHORT).show();
-        sr.stopListening();
-    }
-
     public void pause(View view) {
+        pauseButton.setEnabled(false);
+        playButton.setEnabled(true);
         m.pause();
         isPaused = true;
     }
@@ -206,17 +159,11 @@ public class MainActivity extends Activity implements OnClickListener {
         /*Toast.makeText(getApplicationContext(), "Hopefully starting up Unity!",
                 Toast.LENGTH_SHORT).show();
 */
-//        minuteNumPicker.getValue()
-        delayTime = minuteNumPicker.getValue()*1000 + numPicker.getValue()*60000;
-//        Toast.makeText(getApplicationContext(), "Minutes:" + numPicker.getValue() + " Secodnds: " + minuteNumPicker.getValue(),
-//                Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), "min: " + numPicker.getValue() + " sec: " + minuteNumPicker.getValue() + " delay: " + delayTime,
+        int minuteValue = ((MyApplication) this.getApplication()).getMinuteTime();
+        int secondValue = ((MyApplication) this.getApplication()).getSecondTime();
+        delayTime = minuteValue + secondValue;
+        Toast.makeText(getApplicationContext(), "Presentation Time: " + delayTime,
                 Toast.LENGTH_SHORT).show();
-//        new backgroundThread().execute();
-//        Thread xyz = new Thread(new PhotoDecodeRunnable());
-//        Toast.makeText(getApplicationContext(), "Starting thread",
-//                Toast.LENGTH_SHORT).show();
-//        xyz.start()
 
         myHandler.postDelayed(closeControls, delayTime);
             boolean shoudRecord = ((MyApplication) this.getApplication()).getShouldRecord();
@@ -225,6 +172,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 speak2();
             } else {
                 try {
+                    Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
                     myAudioRecorder.prepare();
                     myAudioRecorder.start();
 //                } catch (IllegalStateException e) {
@@ -235,7 +183,6 @@ public class MainActivity extends Activity implements OnClickListener {
                     e.printStackTrace();
                 }
             }
-        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 //        Intent myIntent = new Intent(MainActivity.this, UnityPlayerNativeActivity.class);
         Intent unityIntent = new Intent(MainActivity.this, UnityCardboardActivity.class);
         MainActivity.this.startActivity(unityIntent);

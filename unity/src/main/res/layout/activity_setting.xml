@@ -3,44 +3,68 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Record"
-        android:onClick="shouldRecord"
-        android:id="@+id/audioToggle"
-        android:layout_marginBottom="82dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Easy Presentation"
         android:id="@+id/easy_button"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="250dp"
         android:onClick="easyModeClicked"
-        android:layout_alignLeft="@+id/medium_button"
-        android:layout_alignStart="@+id/medium_button"
-        android:layout_alignRight="@+id/medium_button"
-        android:layout_alignEnd="@+id/medium_button" />
+        android:layout_centerHorizontal="true"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medium Presentation"
         android:id="@+id/medium_button"
         android:layout_below="@+id/easy_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp" />
+        android:layout_centerHorizontal="true"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hard Presentation"
         android:id="@+id/hard_button"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/medium_button"
-        android:layout_alignEnd="@+id/medium_button"
-        android:layout_alignLeft="@+id/medium_button"
-        android:layout_alignStart="@+id/medium_button" />
+        android:layout_below="@+id/medium_button"
+        android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:id="@+id/radioOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record Me"
+            android:id="@+id/radioRecord"
+            android:checked="true"
+            android:layout_marginTop="440dp"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recognize Me"
+            android:id="@+id/radioRecognize"
+            android:checked="false"
+            android:layout_below="@+id/radioRecord"/>
+    </RadioGroup>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/minutePicker"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="100dp"
+        />
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/secondPicker"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="200dp"
+        />
 </RelativeLayout>

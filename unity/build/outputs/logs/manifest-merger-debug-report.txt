@@ -57,6 +57,8 @@ ADDED from AndroidManifest.xml:25:3
 		ADDED from AndroidManifest.xml:25:83
 	android:icon
 		ADDED from AndroidManifest.xml:25:16
+	android:theme
+		ADDED from AndroidManifest.xml:25:139
 	android:name
 		ADDED from AndroidManifest.xml:25:109
 activity#com.example.FantasyCardboardUnityDemo.MainActivity

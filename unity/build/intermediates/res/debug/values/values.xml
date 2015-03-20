@@ -7,4 +7,8 @@
     <!-- From: file:/Users/knowroaming/Documents/Mat%20Dev/Android/FantasyVRApp/FantasyVRApp/unity/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">Unity</string>
+    <!-- From: file:/Users/knowroaming/Documents/Mat%20Dev/Android/FantasyVRApp/FantasyVRApp/unity/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="android:style/Theme.Holo">
+    </style>
 </resources>

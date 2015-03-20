@@ -4,8 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:id="@+id/mainApp"
-    android:background="#ffd6d6ff">
+    android:id="@+id/mainApp">
 
     <Button
         android:layout_width="wrap_content"
@@ -40,54 +39,37 @@
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/start_Button"
         android:layout_toLeftOf="@+id/start_Button" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recognize my Speech"
-        android:id="@+id/regcognize_Button"
-        android:onClick="recognize"
-        android:clickable="true"
-        android:layout_above="@+id/start_Button"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="68dp" />
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Recognize my Speech"-->
+        <!--android:id="@+id/regcognize_Button"-->
+        <!--android:onClick="recognize"-->
+        <!--android:clickable="true"-->
+        <!--android:layout_above="@+id/start_Button"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_marginBottom="68dp" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Stop my Speech"-->
+        <!--android:id="@+id/stopRecognize_Button"-->
+        <!--android:onClick="stopRecognize"-->
+        <!--android:clickable="true"-->
+        <!--android:layout_alignTop="@+id/regcognize_Button"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true" />-->
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop my Speech"
-        android:id="@+id/stopRecognize_Button"
-        android:onClick="stopRecognize"
-        android:clickable="true"
-        android:layout_alignTop="@+id/regcognize_Button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:text="Settings"
         android:id="@+id/toSettings_Button"
         android:onClick="segue"
         android:clickable="true"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/regcognize_Button"
-        android:layout_alignEnd="@+id/regcognize_Button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="340dp"
+        android:layout_centerHorizontal="true"/>
 
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:id="@+id/pickNumber"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <NumberPicker
-        android:layout_width="80dp"
-        android:layout_height="200dp"
-        android:id="@+id/pickNumberMinute"
-
-        android:layout_toLeftOf="@+id/pause_Button"/>
 </RelativeLayout>
