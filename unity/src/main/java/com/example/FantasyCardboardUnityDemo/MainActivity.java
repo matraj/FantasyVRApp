@@ -2,15 +2,24 @@ package com.example.FantasyCardboardUnityDemo;
 
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -44,6 +53,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private Button startButton, recordButton;
     private Button playButton, pauseButton;
 
+    protected static AudioManager mAudioManager;
+
     private MediaRecorder myAudioRecorder;
     private MediaPlayer m;
     private String outputFile = null;
@@ -54,6 +65,11 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private int delayTime = 5000;
     private Handler myHandler = new Handler();
+
+    private int mBindFlag;
+    private Messenger mServiceMessenger;
+
+    public String strOfResults = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +88,7 @@ public class MainActivity extends Activity implements OnClickListener {
         sr = SpeechRecognizer.createSpeechRecognizer(this);
         sr.setRecognitionListener(new listener());
 
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         m = new MediaPlayer();
 //        m.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -102,6 +119,8 @@ public class MainActivity extends Activity implements OnClickListener {
             boolean shoudRecord = ((MyApplication) MainActivity.this.getApplication()).getShouldRecord();
             if (!shoudRecord) {
                 sr.stopListening();
+                mAudioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
+                mAudioManager.setStreamSolo(AudioManager.STREAM_VOICE_CALL, false);
             } else {
                 myAudioRecorder.stop();
                 myAudioRecorder.release();
@@ -125,6 +144,55 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.d("Test Tag" ,"StartButton clicked");
         }
     }
+
+    public void startService(View view) {
+        Intent intent = new Intent(MainActivity.this, SpeechService.class);
+        MainActivity.this.startService(intent);
+        mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+
+        super.onStart();
+        bindService(new Intent(this, SpeechService.class), mServiceConnection, mBindFlag);
+    }
+
+    public void stopService(View view) {
+        super.onStop();
+
+        if (mServiceMessenger != null) {
+            unbindService(mServiceConnection);
+            mServiceMessenger = null;
+        }
+        //super.onStop();
+    }
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection()
+    {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service)
+        {
+            Log.d(TAG, "onServiceConnected"); //$NON-NLS-1$
+
+            mServiceMessenger = new Messenger(service);
+            Message msg = new Message();
+            msg.what = SpeechService.MSG_RECOGNIZER_START_LISTENING;
+
+            try
+            {
+                mServiceMessenger.send(msg);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name)
+        {
+            Log.d(TAG, "onServiceDisconnected"); //$NON-NLS-1$
+            mServiceMessenger = null;
+        }
+
+    }; // mServiceConnection
 
     public void play(View view) throws IllegalArgumentException,
             SecurityException, IllegalStateException, IOException{
@@ -329,6 +397,8 @@ public class MainActivity extends Activity implements OnClickListener {
 //        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");//
 //        recognizerIntent.putExtra("android.speech.extra.GET_AUDIO", true);//
 
+        mAudioManager.setStreamSolo(AudioManager.STREAM_VOICE_CALL, true);
+
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,2);
         sr.startListening(recognizerIntent);
         Log.i("111111","11111111");
@@ -354,23 +424,27 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         public void onEndOfSpeech()
         {
+            sr.startListening(recognizerIntent);
             Log.d(TAG, "onEndofSpeech");
         }
         public void onError(int error)
         {
+//            mAudioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
+//            mAudioManager.setStreamSolo(AudioManager.STREAM_VOICE_CALL, false);
             Log.d(TAG,  "error " +  error);
         }
         public void onResults(Bundle results)
         {
-            String str = new String();
+
             Log.d(TAG, "onResults " + results);
             ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            for (int i = 0; i < data.size(); i++)
-            {
-                Log.d(TAG, "result " + data.get(i));
-                Toast.makeText(getApplicationContext(), "result " + data.get(i), Toast.LENGTH_LONG).show();
-                str += data.get(i);
-            }
+            //for (int i = 0; i < data.size(); i++)
+            //{
+            strOfResults += data.get(0);
+            Log.d(TAG, "result " + strOfResults);
+            Toast.makeText(getApplicationContext(), "result " + strOfResults, Toast.LENGTH_LONG).show();
+
+            //}
 
             audioUri = recognizerIntent.getData();
             //Toast.makeText(getApplicationContext(), "results: "+String.valueOf(data.size()), Toast.LENGTH_LONG).show();
