@@ -146,53 +146,55 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void startService(View view) {
-        Intent intent = new Intent(MainActivity.this, SpeechService.class);
-        MainActivity.this.startService(intent);
-        mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
-
-        super.onStart();
-        bindService(new Intent(this, SpeechService.class), mServiceConnection, mBindFlag);
+        Intent intent = new Intent(MainActivity.this, PocketSphinxActivity.class);
+        startActivity(intent);
+//        Intent intent = new Intent(MainActivity.this, SpeechService.class);
+//        MainActivity.this.startService(intent);
+//        mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+//
+//        super.onStart();
+//        bindService(new Intent(this, SpeechService.class), mServiceConnection, mBindFlag);
     }
 
     public void stopService(View view) {
         super.onStop();
 
-        if (mServiceMessenger != null) {
-            unbindService(mServiceConnection);
-            mServiceMessenger = null;
-        }
+//        if (mServiceMessenger != null) {
+//            unbindService(mServiceConnection);
+//            mServiceMessenger = null;
+//        }
         //super.onStop();
     }
 
-    private final ServiceConnection mServiceConnection = new ServiceConnection()
-    {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service)
-        {
-            Log.d(TAG, "onServiceConnected"); //$NON-NLS-1$
-
-            mServiceMessenger = new Messenger(service);
-            Message msg = new Message();
-            msg.what = SpeechService.MSG_RECOGNIZER_START_LISTENING;
-
-            try
-            {
-                mServiceMessenger.send(msg);
-            }
-            catch (RemoteException e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name)
-        {
-            Log.d(TAG, "onServiceDisconnected"); //$NON-NLS-1$
-            mServiceMessenger = null;
-        }
-
-    }; // mServiceConnection
+//    private final ServiceConnection mServiceConnection = new ServiceConnection()
+//    {
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service)
+//        {
+//            Log.d(TAG, "onServiceConnected"); //$NON-NLS-1$
+//
+//            mServiceMessenger = new Messenger(service);
+//            Message msg = new Message();
+//            msg.what = SpeechService.MSG_RECOGNIZER_START_LISTENING;
+//
+//            try
+//            {
+//                mServiceMessenger.send(msg);
+//            }
+//            catch (RemoteException e)
+//            {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name)
+//        {
+//            Log.d(TAG, "onServiceDisconnected"); //$NON-NLS-1$
+//            mServiceMessenger = null;
+//        }
+//
+//    }; // mServiceConnection
 
     public void play(View view) throws IllegalArgumentException,
             SecurityException, IllegalStateException, IOException{
