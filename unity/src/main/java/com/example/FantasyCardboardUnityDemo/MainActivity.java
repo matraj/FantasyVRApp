@@ -35,6 +35,7 @@ import com.google.vrtoolkit.cardboard.plugins.unity.UnityCardboardActivity;
 import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 //import java.util.logging.Handler;
@@ -49,6 +50,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
     private SpeechRecognizer sr;
     private static final String TAG = "MyStt3Activity";
+
+    private PocketSphinx speechClass;
 
     private Button startButton, recordButton;
     private Button playButton, pauseButton;
@@ -71,6 +74,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public String strOfResults = new String();
 
+    private HashMap<String, Integer> crutchWordCount = new HashMap<String, Integer>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +90,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 getAbsolutePath() + "/myrecording.3gp";
 
         checkVoiceRecognition();
+        speechClass = new PocketSphinx(MainActivity.this);
+
         sr = SpeechRecognizer.createSpeechRecognizer(this);
         sr.setRecognitionListener(new listener());
 
@@ -118,22 +125,36 @@ public class MainActivity extends Activity implements OnClickListener {
 
             boolean shoudRecord = ((MyApplication) MainActivity.this.getApplication()).getShouldRecord();
             if (!shoudRecord) {
-                sr.stopListening();
-                mAudioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
-                mAudioManager.setStreamSolo(AudioManager.STREAM_VOICE_CALL, false);
+                speechClass.endPresentation();
+//                sr.stopListening();
+//                mAudioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
+//                mAudioManager.setStreamSolo(AudioManager.STREAM_VOICE_CALL, false);
             } else {
+//                speechClass.endPresentation(); //
                 myAudioRecorder.stop();
                 myAudioRecorder.release();
                 myAudioRecorder  = null;
+                UnityCardboardActivity.getActivity().onBackPressed();
+                Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+                MainActivity.this.startActivity(mainIntent);
             }
             Toast.makeText(getApplicationContext(), "Audio recorded successfully",
                     Toast.LENGTH_LONG).show();
-
-            UnityCardboardActivity.getActivity().onBackPressed();
-            Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
-            MainActivity.this.startActivity(mainIntent);
         }
     };
+
+    public void stopPresentation() {
+        Toast.makeText(getApplicationContext(), "Now stop the runnable and present the word count and or play buttons",
+                Toast.LENGTH_LONG).show();
+//        myAudioRecorder.stop();  //
+//        myAudioRecorder.release(); //
+//        myAudioRecorder  = null; //
+        Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+        MainActivity.this.startActivity(mainIntent);
+        crutchWordCount = ((MyApplication) this.getApplication()).getCrutchWordCount();
+        Toast.makeText(getApplicationContext(), "YOUR CRUTCH WORD COUNT: " + crutchWordCount,
+                Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onClick(View v) {
@@ -157,7 +178,9 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void stopService(View view) {
-        super.onStop();
+        // Set at top and call setup method in on create
+        // Here call the start listening method.
+        speechClass.prepareForSpeech();
 
 //        if (mServiceMessenger != null) {
 //            unbindService(mServiceConnection);
@@ -239,12 +262,15 @@ public class MainActivity extends Activity implements OnClickListener {
             boolean shoudRecord = ((MyApplication) this.getApplication()).getShouldRecord();
 
             if (!shoudRecord) {
-                speak2();
+//                speak2();
+                speechClass.prepareForSpeech();
             } else {
+//                speechClass.prepareForSpeech(); //
                 try {
                     Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
                     myAudioRecorder.prepare();
                     myAudioRecorder.start();
+//                    myAudioRecorder.AudioSource.MIC
 //                } catch (IllegalStateException e) {
 //                    // TODO Auto-generated catch block
 //                    e.printStackTrace();}

@@ -2,6 +2,8 @@ package com.example.FantasyCardboardUnityDemo;
 
 import android.app.Application;
 
+import java.util.HashMap;
+
 /**
  * Created by knowroaming on 15-03-17.
  */
@@ -30,4 +32,8 @@ public class MyApplication extends Application {
     public void setSecondTime(int secondTime) {
         this.secondTime = secondTime;
     }
+
+    private HashMap<String, Integer> crutchWordCount = new HashMap<String, Integer>();
+    public HashMap getCrutchWordCount() { return  crutchWordCount; }
+    public void setCrutchWordCount(HashMap<String, Integer> crutchWordCount) { this.crutchWordCount = crutchWordCount; }
 }

@@ -4,10 +4,11 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 
-    <string name="kws_caption">To start demonstration say \"Start Presentation\".</string>
+    <string name="kws_caption">To start speech recognizer say \"Start\".</string>
     <string name="kws_stop_caption">stop</string>
-    <string name="menu_caption">Say \"digits\" or \"forecast\" to choose particular example.</string>
-    <string name="digits_caption">Let\'s recognize some digits: say something like \"one two three four five\".</string>
+    <string name="menu_caption">Now say \"presentation\" when your ready to present.</string>
+    <!--<string name="digits_caption">Let\'s recognize some digits: say something like \"one two three four five\".</string>-->
+    <string name="digits_caption">You may now speak! Say anything and I will try to keep count of your crutch words.</string>
     <string name="forecast_caption">Say something typical to a weather forecast like \"sunny spells on Wednesday\".</string>
     <!--<string name="speech_prompt">Say something&#8230;</string>-->
     <!--<string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>-->
